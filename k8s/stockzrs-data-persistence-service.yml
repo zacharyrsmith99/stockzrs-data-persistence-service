@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stockzrs-data-persistence-service
+  namespace: stockzrs-data-persistence-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stockzrs-data-persistence-service
+  template:
+    metadata:
+      labels:
+        app: stockzrs-data-persistence-service
+    spec:
+      nodeSelector:
+        role: general
+      containers:
+      - name: stockzrs-data-persistence-service
+        image: PLACEHOLDER_IMAGE
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        envFrom:
+        - secretRef:
+            name: stockzrs-data-persistence-secrets

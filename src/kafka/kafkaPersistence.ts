@@ -1,6 +1,7 @@
 import { Kafka, Consumer } from 'kafkajs';
 import { Pool } from 'pg';
 import BaseLogger from '../utils/logger';
+import { DateTime } from 'luxon';
 
 enum AssetType {
   Cryptocurrency = 'minute_by_minute_cryptocurrency',
@@ -12,7 +13,8 @@ enum AssetType {
 
 interface AggregatedData {
   symbol: string;
-  timestamp: number;
+  openTimestamp: number;
+  closeTimestamp: number;
   type: AssetType;
   openPrice: number;
   highPrice: number;
@@ -42,10 +44,14 @@ export default class DataPersistenceService {
         low_price = EXCLUDED.low_price,
         close_price = EXCLUDED.close_price
     `;
+
+    const dateTime = DateTime.fromSeconds(data.openTimestamp).toFormat(
+      "yyyy-MM-dd HH:mm",
+    )
     
     const values = [
       data.symbol,
-      new Date(data.timestamp * 1000),
+      dateTime,
       data.openPrice,
       data.highPrice,
       data.lowPrice,

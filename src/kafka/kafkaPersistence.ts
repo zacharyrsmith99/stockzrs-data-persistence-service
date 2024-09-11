@@ -82,10 +82,10 @@ export default class DataPersistenceService {
 
   private getAssetType(assetTypeString: string): AssetType {
     switch (assetTypeString) {
-      case 'Digital Currency': return AssetType.Cryptocurrency;
-      case 'Index': return AssetType.Index;
-      case 'Physical Currency': return AssetType.Currency;
-      case 'Common Stock': return AssetType.Stock;
+      case 'CRYPTOCURRENCY': return AssetType.Cryptocurrency;
+      case 'INDEX': return AssetType.Index;
+      case 'CURRENCY': return AssetType.Currency;
+      case 'STOCK': return AssetType.Stock;
       case 'ETF': return AssetType.ETF;
       default: throw new Error(`Unknown asset type: ${assetTypeString}`);
     }

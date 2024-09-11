@@ -6,9 +6,9 @@ import { Pool } from 'pg';
 async function start() {
   const logger = new BaseLogger(path.join(__dirname, "app.log"));
   const postgresConfig = {
-    user: process.env.POSTGRES_USER,
+    user: process.env.POSTGRES_USERNAME,
     host: process.env.POSTGRES_HOST,
-    database: process.env.POSTGRES_DB,
+    database: process.env.POSTGRES_DB_NAME,
     password: process.env.POSTGRES_PASSWORD,
     port: parseInt(process.env.POSTGRES_PORT || '5432'),
   };

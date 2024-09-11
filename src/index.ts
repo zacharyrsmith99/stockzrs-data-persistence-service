@@ -11,6 +11,9 @@ async function start() {
     database: process.env.POSTGRES_DB_NAME,
     password: process.env.POSTGRES_PASSWORD,
     port: parseInt(process.env.POSTGRES_PORT || '5432'),
+    ssl: {
+      rejectUnauthorized: false
+    }
   };
   const pool = new Pool(postgresConfig)
 

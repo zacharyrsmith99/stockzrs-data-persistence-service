@@ -13,11 +13,11 @@ enum AssetType {
 interface AggregatedData {
   symbol: string;
   timestamp: number;
+  type: AssetType;
   openPrice: number;
   highPrice: number;
   lowPrice: number;
   closePrice: number;
-  assetType: string;
 }
 
 export default class DataPersistenceService {
@@ -70,7 +70,7 @@ export default class DataPersistenceService {
         if (message.value) {
           const data: AggregatedData = JSON.parse(message.value.toString());
           try {
-            const assetType = this.getAssetType(data.assetType);
+            const assetType = this.getAssetType(data.type);
             await this.upsertData(assetType, data);
           } catch (error) {
             this.logger.error(`Error processing aggregated data message message: ${error}`);

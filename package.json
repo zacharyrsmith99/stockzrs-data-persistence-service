@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --sourceMap false -p tsconfig.json",
+    "start": "ts-node -r dotenv/config src/index.ts"
   },
   "author": "zachary.r.smith99@gmail.com",
   "license": "ISC",

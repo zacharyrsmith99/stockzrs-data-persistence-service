@@ -62,7 +62,7 @@ export default class DataPersistenceService {
       await this.pool.query(query, values);
       this.logger.info(`Upserted data for symbol: (${data.symbol}), asset type: (${assetType})`);
     } catch (error) {
-      this.logger.error(`Error upserting data for symbol (${data.symbol}), asset type: (${assetType}): (${error})`);
+      this.logger.error(`Error upserting data values (${values}) for symbol (${data.symbol}), asset type: (${assetType}): (${error})`);
       throw error;
     }
   }

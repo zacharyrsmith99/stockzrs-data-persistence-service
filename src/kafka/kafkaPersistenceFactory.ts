@@ -1,7 +1,7 @@
 import BaseLogger from "../utils/logger";
 import DataPersistenceService from "./kafkaPersistence";
 import { Kafka } from "kafkajs";
-import { Pool } from 'pg';
+import { Pool } from "pg";
 
 const MAX_RETRIES = 5;
 const INITIAL_RETRY_DELAY = 5000;
@@ -32,7 +32,10 @@ async function retryWithBackoff<T>(
   }
 }
 
-export default async function dataPersitenceFactory(logger: BaseLogger, pool: Pool) {
+export default async function dataPersitenceFactory(
+  logger: BaseLogger,
+  pool: Pool,
+) {
   const brokers = process.env.KAFKA_BOOTSTRAP_SERVERS
     ? process.env.KAFKA_BOOTSTRAP_SERVERS!.split(",")
     : ["localhost:9092"];
@@ -52,7 +55,11 @@ export default async function dataPersitenceFactory(logger: BaseLogger, pool: Po
     },
   });
 
-  const dataPersistenceService = new DataPersistenceService(kafka, pool, logger);
+  const dataPersistenceService = new DataPersistenceService(
+    kafka,
+    pool,
+    logger,
+  );
 
   await retryWithBackoff(async () => {
     logger.info("Attempting to start Data Persistence Kafka...");

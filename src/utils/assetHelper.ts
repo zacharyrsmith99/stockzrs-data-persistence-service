@@ -60,5 +60,5 @@ function getMarketSuffix(assetType: AssetTypeV2): string {
 }
 
 export function getAssetTableNameV2(assetType: AssetTypeV2): string {
-  return `${assetType.toLowerCase()}${getMarketSuffix(assetType)}_1min`;
+  return `v2.${assetType.toLowerCase()}${getMarketSuffix(assetType)}_1min`;
 }

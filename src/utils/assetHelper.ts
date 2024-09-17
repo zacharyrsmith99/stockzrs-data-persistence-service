@@ -8,6 +8,23 @@ export enum AssetTypeV2 {
   ETF = "etf",
 }
 
+export function getAssetTableTypeV2(assetTypeString: string): AssetTypeV2 {
+  switch (assetTypeString) {
+    case "CRYPTOCURRENCY":
+      return AssetTypeV2.Cryptocurrency;
+    case "INDEX":
+      return AssetTypeV2.Index;
+    case "CURRENCY":
+      return AssetTypeV2.Currency;
+    case "STOCK":
+      return AssetTypeV2.Stock;
+    case "ETF":
+      return AssetTypeV2.ETF;
+    default:
+      throw new Error(`Unknown asset type: ${assetTypeString}`);
+  }
+}
+
 function getMarketSuffix(assetType: AssetTypeV2): string {
   const now = DateTime.utc().setZone("America/New_York");
   const dayOfWeek = now.weekday;
@@ -31,11 +48,11 @@ function getMarketSuffix(assetType: AssetTypeV2): string {
     const time = now.toFormat("HH:mm");
 
     if (time < "09:30") {
-      return "pre_market";
+      return "_pre_market";
     } else if (time >= "09:30" && time < "16:00") {
-      return "main_market";
+      return "_main_market";
     } else if (time >= "16:00") {
-      return "after_market";
+      return "_after_market";
     }
   }
 
@@ -43,5 +60,5 @@ function getMarketSuffix(assetType: AssetTypeV2): string {
 }
 
 export function getAssetTableNameV2(assetType: AssetTypeV2): string {
-  return `${assetType.toLowerCase()}_${getMarketSuffix(assetType)}_1min`;
+  return `${assetType.toLowerCase()}${getMarketSuffix(assetType)}_1min`;
 }

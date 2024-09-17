@@ -2,7 +2,7 @@ import { Kafka, Consumer } from "kafkajs";
 import { Pool } from "pg";
 import BaseLogger from "../utils/logger";
 import { DateTime } from "luxon";
-import { AssetTypeV2, getAssetTableNameV2 } from "../utils/assetHelper";
+import { getAssetTableNameV2, getAssetTableTypeV2 } from "../utils/assetHelper";
 
 enum AssetType {
   Cryptocurrency = "minute_by_minute_cryptocurrency",
@@ -82,7 +82,7 @@ export default class DataPersistenceService {
   private async processMessage(value: Buffer) {
     const data: AggregatedData = JSON.parse(value.toString());
     try {
-      const assetType = this.getAssetTableName(data.type);
+      const assetType = this.getAssetTableType(data.type);
       await this.upsertData(assetType, data);
     } catch (error) {
       this.logger.error(
@@ -94,8 +94,9 @@ export default class DataPersistenceService {
   private async processMessageV2(value: Buffer) {
     const data: AggregatedData = JSON.parse(value.toString());
     try {
-      const assetType = getAssetTableNameV2(data.type as AssetTypeV2);
-      await this.upsertData(assetType, data);
+      const assetType = getAssetTableTypeV2(data.type);
+      const assetTable = getAssetTableNameV2(assetType);
+      await this.upsertData(assetTable, data);
     } catch (error) {
       this.logger.error(
         `Error processing aggregated data message message: ${error}`,
@@ -120,7 +121,7 @@ export default class DataPersistenceService {
     });
   }
 
-  private getAssetTableName(assetTypeString: string): AssetType {
+  private getAssetTableType(assetTypeString: string): AssetType {
     switch (assetTypeString) {
       case "CRYPTOCURRENCY":
         return AssetType.Cryptocurrency;
